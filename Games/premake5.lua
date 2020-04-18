@@ -13,7 +13,9 @@ project "FlappyClone"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"Common/src/**.h",
+		"Common/src/**.cpp"
 	}
 
 	includedirs
@@ -21,7 +23,8 @@ project "FlappyClone"
 		"%{wks.location}/GitGud/vendor/spdlog/include",
 		"%{wks.location}/GitGud/src",
 		"%{wks.location}/GitGud/vendor",
-		"%{wks.location}/GitGud/vendor/glm"
+		"%{wks.location}/GitGud/vendor/glm",
+		"Common/src"
 	}
 
 	links
@@ -69,7 +72,9 @@ project "R-Type"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"Common/src/**.h",
+		"Common/src/**.cpp"
 	}
 	
 	includedirs
@@ -78,6 +83,7 @@ project "R-Type"
 		"%{wks.location}/GitGud/src",
 		"%{wks.location}/GitGud/vendor",
 		"%{wks.location}/GitGud/vendor/glm"
+		"Common/src"
 	}
 	
 	links
