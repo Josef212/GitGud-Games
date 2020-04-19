@@ -1,11 +1,18 @@
+#define TEST 0
+
 #include <GitGud.h>
 #include <GitGud/Core/EntryPoint.h>
 
+#if TEST
 #include "Collisions.h"
+#endif
+
+#include "GameLayer.h"
 
 #include <glm/glm.hpp>
 #include <imgui/imgui.h>
 
+#if TEST
 class TestLayer : public GitGud::Layer
 {
 public:
@@ -86,19 +93,28 @@ private:
 	GitGud::OrthographicCameraController _cameraController;
 	GitGud::Extensions::CollisionModule _collisionModule;
 };
+#endif
 
 class FlappyCloneApp : public GitGud::Application
 {
 public:
 	FlappyCloneApp()
 	{
+		_collisionModule = new GitGud::Extensions::CollisionModule();
+
+#if TEST
 		PushLayer(new TestLayer());
+#endif
+		PushLayer(new GameLayer());
 	}
 
 	~FlappyCloneApp()
 	{
-
+		delete _collisionModule;
 	}
+
+private:
+	GitGud::Extensions::CollisionModule* _collisionModule = nullptr;
 };
 
 GitGud::Application* GitGud::CreateApplication()

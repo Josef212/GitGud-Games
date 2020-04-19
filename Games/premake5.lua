@@ -82,7 +82,7 @@ project "R-Type"
 		"%{wks.location}/GitGud/vendor/spdlog/include",
 		"%{wks.location}/GitGud/src",
 		"%{wks.location}/GitGud/vendor",
-		"%{wks.location}/GitGud/vendor/glm"
+		"%{wks.location}/GitGud/vendor/glm",
 		"Common/src"
 	}
 	

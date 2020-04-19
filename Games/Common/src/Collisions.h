@@ -67,8 +67,12 @@ namespace GitGud::Extensions
 		const std::vector<Collider2D*>::const_iterator begin() const { return _colliders.begin(); }
 		const std::vector<Collider2D*>::const_iterator end() const { return _colliders.end(); }
 
+		inline static CollisionModule& Get() { return *s_instance; }
+
 	private:
 		std::vector<Collider2D*> _colliders;
 		std::unordered_set<Collider2D*> _dirtyColliders;
+
+		static CollisionModule* s_instance;
 	};
 }

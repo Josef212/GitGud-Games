@@ -1,4 +1,4 @@
-workspace "GitGud"
+workspace "GitGud-Games"
 	startproject "Sandbox"
 	architecture "x64"
 

@@ -59,8 +59,12 @@ namespace GitGud::Extensions
 
 	// -----------------
 
+	CollisionModule* CollisionModule::s_instance = nullptr;
+
 	CollisionModule::CollisionModule()
 	{
+		GG_CORE_ASSERT(!s_instance, "Collision module already exists!");
+		s_instance = this;
 	}
 
 	CollisionModule::~CollisionModule()
@@ -93,7 +97,6 @@ namespace GitGud::Extensions
 		// Check collisions
 		for (auto it1 = _colliders.begin(); it1 != _colliders.end(); ++it1)
 		{
-
 			for (auto it2 = std::next(it1); it2 != _colliders.end(); ++it2)
 			{
 				if ((*it1)->CollidesWith(*(*it2)))
