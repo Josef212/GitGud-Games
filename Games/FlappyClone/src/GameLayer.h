@@ -18,6 +18,7 @@ public:
 
 private:
 	void UpdateCamera(uint32_t width, uint32_t height);
+	bool OnWindowResize(GitGud::WindowResizeEvent& e);
 
 private:
 	GitGud::Scope<GitGud::OrthographicCamera> _camera;

@@ -8,6 +8,7 @@
 #endif
 
 #include "GameLayer.h"
+#include "TestEditorLayer.h"
 
 #include <glm/glm.hpp>
 #include <imgui/imgui.h>
@@ -106,6 +107,7 @@ public:
 		PushLayer(new TestLayer());
 #endif
 		PushLayer(new GameLayer());
+		PushLayer(new TestEditorLayer());
 	}
 
 	~FlappyCloneApp()

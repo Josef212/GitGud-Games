@@ -3,6 +3,8 @@
 #include "GameElements/Block.h"
 #include "Random.h"
 
+#include <imgui/imgui.h>
+
 using namespace GitGud;
 using namespace GitGud::Extensions;
 
@@ -47,10 +49,13 @@ void GameLayer::OnUpdate(Timestep ts)
 
 void GameLayer::OnImGuiRender()
 {
+
 }
 
 void GameLayer::OnEvent(Event& event)
 {
+	EventDispatcher dispatcher(event);
+	dispatcher.Dispatch<WindowResizeEvent>(GG_BIND_EVENT_FN(GameLayer::OnWindowResize));
 }
 
 void GameLayer::UpdateCamera(uint32_t width, uint32_t height)
@@ -61,4 +66,10 @@ void GameLayer::UpdateCamera(uint32_t width, uint32_t height)
 	float halfWidth = halfHeight * ar;
 
 	_camera->SetProjection(-halfWidth, halfWidth, -halfHeight, halfHeight);
+}
+
+bool GameLayer::OnWindowResize(WindowResizeEvent& e)
+{
+	UpdateCamera(e.GetWidth(), e.GetHeight());
+	return false;
 }
