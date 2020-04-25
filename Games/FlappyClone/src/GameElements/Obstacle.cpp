@@ -1,4 +1,4 @@
-#include "Block.h"
+#include "Obstacle.h"
 #include "../FlappyCloneApp.h"
 
 #include <GitGud.h>
@@ -6,44 +6,41 @@
 
 using namespace GitGud::Extensions;
 
-Block::Block() : _blockPosition(0.0f), _gapYPosition(0.0f), _blockWidth(2.0f), _gapHeightPerdentage(0.15f), _color({ 1.0f, 0.1f, 0.5f, 1.0f }), 
+Obstacle::Obstacle() : _obstacleXPosition(0.0f), _gapYPosition(0.0f), _obstacleWidth(2.0f), _gapHeightPerdentage(0.15f), _zPosition(0.0f), _color({ 1.0f, 0.1f, 0.5f, 1.0f }),
 _topCollider(new QuadCollider2D({0.0f, 0.0f}, { 1.0f, 1.0f })), _botCollider(new QuadCollider2D({ 0.0f, 0.0f }, { 1.0f, 1.0f }))
 {
-	CollisionModule::Get().AddCollider(_topCollider);
-	CollisionModule::Get().AddCollider(_botCollider);
+	CollisionModule::Get()->AddCollider(_topCollider);
+	CollisionModule::Get()->AddCollider(_botCollider);
 }
 
-Block::Block(float blockPosition, float gapYPosition, float blockWidth, float gapHeightPercentage, const glm::vec4& color)
-	: _blockPosition(blockPosition), _gapYPosition(gapYPosition), _blockWidth(blockWidth), _gapHeightPerdentage(gapHeightPercentage), _color(color),
+Obstacle::Obstacle(float blockPosition, float gapYPosition, float blockWidth, float gapHeightPercentage, const glm::vec4& color)
+	: _obstacleXPosition(blockPosition), _gapYPosition(gapYPosition), _obstacleWidth(blockWidth), _gapHeightPerdentage(gapHeightPercentage), _zPosition(0.0f), _color(color),
 	_topCollider(new QuadCollider2D({ 0.0f, 0.0f }, { 1.0f, 1.0f })), _botCollider(new QuadCollider2D({0.0f, 0.0f}, { 1.0f, 1.0f }))
 {
-	CollisionModule::Get().AddCollider(_topCollider);
-	CollisionModule::Get().AddCollider(_botCollider);
+	CollisionModule::Get()->AddCollider(_topCollider);
+	CollisionModule::Get()->AddCollider(_botCollider);
 	TransformUpdated();
 }
 
-Block::~Block()
+Obstacle::~Obstacle()
 {
 
 }
 
-void Block::Update(float dt)
+void Obstacle::Update(float speed)
 {
-	//const float speed = 2.0f;
-	//
-	//_position.x += speed * dt * (Random::Float() * 2 - 1.0f);
-	//_position.y += speed * dt * (Random::Float() * 2 - 1.0f);
+	SetX(_obstacleXPosition + speed);
 }
 
-void Block::Render()
+void Obstacle::Render()
 {
 	GitGud::Renderer2D::DrawQuad(_botPos, _botSize, _color);
 	GitGud::Renderer2D::DrawQuad(_topPos, _topSize, _color);
 }
 
-void Block::TransformUpdated()
+void Obstacle::TransformUpdated()
 {
-	auto camera = static_cast<FlappyCloneApp&>(GitGud::Application::Get()).GetCamera();
+	auto& camera = static_cast<FlappyCloneApp&>(GitGud::Application::Get()).GetCamera();
 
 	// Will assume _gapYHeight goes from 0(bot) to camera height(top)
 
@@ -60,9 +57,9 @@ void Block::TransformUpdated()
 	_topSize.y = blocksHeight - _botSize.y;
 	_topPos.y = totalHeight - (_topSize.y * 0.5f) + camera.GetBottom();
 
-	_botSize.x = _topSize.x = _blockWidth;
-	_botPos.x = _topPos.x = _blockPosition;
-	_botPos.z = _topPos.z = 0.0f;
+	_botSize.x = _topSize.x = _obstacleWidth;
+	_botPos.x = _topPos.x = _obstacleXPosition;
+	_botPos.z = _topPos.z = _zPosition;
 
 	if (_topCollider)
 	{
