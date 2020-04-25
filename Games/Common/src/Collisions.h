@@ -18,7 +18,7 @@ namespace GitGud::Extensions
 	public:
 		using CollisionCallback = std::function<void(Collider2D*)>;
 
-		inline const glm::vec2& GetPositoon() const { return _position; }
+		inline const glm::vec2& GetPositon() const { return _position; }
 		inline void SetPosition(float x, float y) { _position = { x, y }; }
 
 		inline Collider2DType GetColliderType() const { return _colliderType; }
@@ -67,7 +67,7 @@ namespace GitGud::Extensions
 		const std::vector<Collider2D*>::const_iterator begin() const { return _colliders.begin(); }
 		const std::vector<Collider2D*>::const_iterator end() const { return _colliders.end(); }
 
-		inline static CollisionModule& Get() { return *s_instance; }
+		inline static CollisionModule* Get() { return s_instance; }
 
 	private:
 		std::vector<Collider2D*> _colliders;
