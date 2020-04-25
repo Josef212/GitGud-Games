@@ -11,14 +11,8 @@ public:
 
 	virtual void OnUpdate(GitGud::Timestep ts) override;
 	virtual void OnImGuiRender() override;
-	virtual void OnEvent(GitGud::Event& event) override;
 
 private:
-	void UpdateCamera(uint32_t width, uint32_t height);
-	bool OnWindowResize(GitGud::WindowResizeEvent& e);
-
-private:
-	GitGud::Scope<GitGud::OrthographicCamera> _camera;
 	glm::vec2 _position, _size;
 	glm::vec4 _color;
 	char _name[50];

@@ -14,23 +14,21 @@ GameLayer::GameLayer() : Layer("FlappyClone"), _camera(CreateScope<OrthographicC
 	UpdateCamera(win.GetWidth(), win.GetHeight());
 	
 	Random::Init();
-
-	_level = new Level();
 }
 
 GameLayer::~GameLayer()
 {
-	delete _level;
+
 }
 
 void GameLayer::OnAttach()
 {
-
+	_level = new Level();
 }
 
 void GameLayer::OnDetach()
 {
-
+	delete _level;
 }
 
 void GameLayer::OnUpdate(Timestep ts)
@@ -39,11 +37,11 @@ void GameLayer::OnUpdate(Timestep ts)
 
 	RenderCommand::SetClearColor(glm::vec4(0.15f));
 	RenderCommand::Clear();
-
+	
 	Renderer2D::BeginScene(*_camera);
-
+	
 	_level->Render();
-
+	
 	Renderer2D::EndScene();
 }
 

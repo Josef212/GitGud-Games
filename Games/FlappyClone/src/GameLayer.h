@@ -16,6 +16,8 @@ public:
 	virtual void OnImGuiRender() override;
 	virtual void OnEvent(GitGud::Event& event) override;
 
+	const GitGud::OrthographicCamera& GetCamera() { return *_camera; }
+
 private:
 	void UpdateCamera(uint32_t width, uint32_t height);
 	bool OnWindowResize(GitGud::WindowResizeEvent& e);
