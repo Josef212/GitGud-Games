@@ -9,28 +9,24 @@ class Block : public GameElement
 {
 public:
 	Block();
-	Block(const glm::vec2& position, const glm::vec2& size, const glm::vec2& normal, const glm::vec4& color);
+	Block(float blockPosition, float gapYPosition, float blockWidth, float gapHeightPercentage, const glm::vec4& color);
 	virtual ~Block();
 
 	virtual void Update(float dt) override;
 	virtual void Render() override;
 
-	inline const glm::vec2& GetPosition() const { return _position; }
-	inline void SetPosition(const glm::vec2& position) { _position = position; TransformUpdated(); }
+	inline void SetX(float x) { _blockPosition = x; TransformUpdated(); }
+	inline float GetX() const { return _blockPosition; }
 
-	inline const glm::vec2& GetSize() const { return _size; }
-	inline void SetSize(const glm::vec2& size) { _size = size; TransformUpdated(); }
-
-	inline const glm::vec2& GetNormal() const { return _normal; }
-	inline void SetNormal(const glm::vec2& normal) { _normal = normal; TransformUpdated(); }
-
-	inline const GitGud::Extensions::QuadCollider2D* GetCollider() const { return _collider; }
+	inline const GitGud::Extensions::QuadCollider2D* GetCollider() const { return _topCollider; }
 
 protected:
 	void TransformUpdated();
 
 protected:
-	glm::vec2 _position, _size, _normal;
+	float _blockPosition, _gapYPosition, _blockWidth, _gapHeightPerdentage;
 	glm::vec4 _color;
-	GitGud::Extensions::QuadCollider2D* _collider;
+	GitGud::Extensions::QuadCollider2D* _topCollider, *_botCollider;
+	glm::vec3 _botPos = glm::vec3(0.0f), _topPos = glm::vec3(0.0f);
+	glm::vec2 _botSize = glm::vec2(1.0f), _topSize = glm::vec2(1.0f);
 };

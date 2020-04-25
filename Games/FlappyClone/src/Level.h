@@ -13,7 +13,7 @@ public:
 
 private:
 	std::vector<Block*> _blocks;
-	Block* _topLimit, * _bottomLimit;
+	Block* _limits;
 
 	float _levelSpeed;
 };
