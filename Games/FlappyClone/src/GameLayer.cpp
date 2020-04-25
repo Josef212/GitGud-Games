@@ -1,6 +1,5 @@
 #include "GameLayer.h"
 
-#include "GameElements/Block.h"
 #include "Random.h"
 
 #include <imgui/imgui.h>
@@ -47,7 +46,7 @@ void GameLayer::OnUpdate(Timestep ts)
 
 void GameLayer::OnImGuiRender()
 {
-
+	_level->OnImGuiRender();
 }
 
 void GameLayer::OnEvent(Event& event)

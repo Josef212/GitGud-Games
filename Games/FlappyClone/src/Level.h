@@ -1,6 +1,7 @@
 #pragma once
 
-#include "GameElements/Block.h"
+#include "GameElements/Obstacle.h"
+#include "LevelProperties.h"
 
 class Level
 {
@@ -10,11 +11,13 @@ public:
 
 	void Update(float dt);
 	void Render();
+	void OnImGuiRender();
 
 private:
-	std::vector<Block*> _blocks;
-	Block* _limits;
+	std::vector<Obstacle*> _obstacles;
+	Obstacle* _limits;
 
-	float _levelSpeed;
+	uint32_t _currentObstacleIndex = 0;
+	LevelProperties _levelProperties;
 };
 
