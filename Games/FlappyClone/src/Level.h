@@ -14,6 +14,9 @@ public:
 	void OnImGuiRender();
 
 private:
+	void GenerateObstacle(Obstacle& obstacle, float prevX);
+
+private:
 	std::vector<Obstacle*> _obstacles;
 	Obstacle* _limits;
 

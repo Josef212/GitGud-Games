@@ -16,13 +16,10 @@ Level::Level() : _limits(nullptr)
 	float lastX = camera.GetRight();
 	for (uint32_t i = 0; i < _levelProperties.ObstaclesCount; ++i)
 	{
-		float separation = _levelProperties.ObstaclesSeparation.Value();
-		float x = lastX + separation;
-		glm::vec4 color = { 0.4f, 0.4f, 0.4f, 1.0f };
+		_obstacles.emplace_back(new Obstacle());
+		GenerateObstacle(*_obstacles[i], lastX);
 
-		_obstacles.emplace_back(new Obstacle(x, 0.0f, _levelProperties.ObstacleWidth, 0.15f, color));
-
-		lastX = x;
+		lastX = _obstacles[i]->GetX();
 	}
 }
 
@@ -45,7 +42,8 @@ void Level::Update(float dt)
 	{
 		uint32_t prevObstacleIndex = (_currentObstacleIndex - 1) % _obstacles.size();
 		Obstacle* prevObstacle = _obstacles[prevObstacleIndex];
-		currentObstacle->SetX(prevObstacle->GetX() + _levelProperties.ObstaclesSeparation.Value());
+		GenerateObstacle(*currentObstacle, prevObstacle->GetX());
+		
 		_currentObstacleIndex = ++_currentObstacleIndex % _obstacles.size();
 	}
 }
@@ -79,4 +77,18 @@ void Level::OnImGuiRender()
 	LevelPropertiesEditor(_levelProperties);
 
 	ImGui::End();
+}
+
+void Level::GenerateObstacle(Obstacle& obstacle, float prevX)
+{
+	float x = prevX + _levelProperties.ObstaclesSeparation.Value();
+	float gapY = _levelProperties.GapeHeightY.Value();
+	float gapHeightPercentage = _levelProperties.GapHeightPercentage.Value();
+	glm::vec4 color = { 0.4f, 0.4f, 0.4f, 1.0f };
+
+	obstacle.SetX(x);
+	obstacle.SetGapY(gapY);
+	obstacle.SetObstacleWidth(_levelProperties.ObstacleWidth);
+	obstacle.SetGapHeightPerdentage(gapHeightPercentage);
+	obstacle.SetColor(color);
 }

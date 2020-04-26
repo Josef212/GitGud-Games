@@ -30,6 +30,9 @@ public:
 	inline void SetZ(float z) { _zPosition = z; TransformUpdated(); }
 	inline float GetZ() const { return _zPosition; }
 
+	inline void SetColor(const glm::vec4& color) { _color = color; }
+	inline const glm::vec4& GetColor() const { return _color; }
+
 	inline const GitGud::Extensions::QuadCollider2D* GetTopCollider() const { return _topCollider; }
 	inline const GitGud::Extensions::QuadCollider2D* GetBotCollider() const { return _botCollider; }
 
