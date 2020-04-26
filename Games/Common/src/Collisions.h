@@ -5,6 +5,8 @@
 #include <functional>
 #include <unordered_set>
 
+#include <string>
+
 namespace GitGud::Extensions
 {
 	enum class Collider2DType
@@ -28,6 +30,9 @@ namespace GitGud::Extensions
 
 	protected:
 		Collider2D(const glm::vec2& position, CollisionCallback callback, Collider2DType _colliderType);
+
+	public:
+		std::string _debugName = "";
 
 	protected:
 		glm::vec2 _position;
@@ -61,6 +66,8 @@ namespace GitGud::Extensions
 		void AddCollider(Collider2D* collider);
 		void RemoveCollider(Collider2D* collider);
 
+		void DrawDebug();
+
 		std::vector<Collider2D*>::iterator begin() { return _colliders.begin(); }
 		std::vector<Collider2D*>::iterator end() { return _colliders.end(); }
 
@@ -68,6 +75,9 @@ namespace GitGud::Extensions
 		const std::vector<Collider2D*>::const_iterator end() const { return _colliders.end(); }
 
 		inline static CollisionModule* Get() { return s_instance; }
+
+	public:
+		bool _drawDebug = false;
 
 	private:
 		std::vector<Collider2D*> _colliders;

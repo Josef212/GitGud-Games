@@ -1,6 +1,8 @@
 #include <ggpch.h>
 #include "Collisions.h"
 
+#include <GitGud.h>
+
 namespace GitGud::Extensions
 {
 	struct Bounds
@@ -12,11 +14,11 @@ namespace GitGud::Extensions
 		{
 			glm::vec2 size = Size;
 			glm::vec2 otherSize = other.Size;
-			
-			return (BottomLeft.x < other.BottomLeft.x + otherSize.x &&
-				BottomLeft.x + size.x > other.BottomLeft.x &&
-				BottomLeft.y < other.BottomLeft.y + otherSize.y &&
-				size.y + BottomLeft.y > other.BottomLeft.y);
+
+			bool xCollision = BottomLeft.x < other.BottomLeft.x + otherSize.x && BottomLeft.x + size.x > other.BottomLeft.x;
+			bool yCollision = BottomLeft.y < other.BottomLeft.y + otherSize.y && BottomLeft.y + size.y > other.BottomLeft.y;
+
+			return xCollision && yCollision;
 		}
 	};
 
@@ -52,7 +54,7 @@ namespace GitGud::Extensions
 		
 		// TODO: Can optimize this if each collider stores its bounds
 		Bounds b1 = { { _position.x - _size.x * 0.5f, _position.y - _size.y * 0.5f }, _size };
-		Bounds b2 = { { quadCollider._position.x - quadCollider._size.x * 0.5f, quadCollider._position.y - quadCollider._size.y * 0.5f }, _size };
+		Bounds b2 = { { quadCollider._position.x - quadCollider._size.x * 0.5f, quadCollider._position.y - quadCollider._size.y * 0.5f }, quadCollider._size };
 		
 		return b1.Collides(b2);
 	}
@@ -97,8 +99,14 @@ namespace GitGud::Extensions
 		// Check collisions
 		for (auto it1 = _colliders.begin(); it1 != _colliders.end(); ++it1)
 		{
+			//for (auto it2 = _colliders.begin(); it2 != _colliders.end(); ++it2)
 			for (auto it2 = std::next(it1); it2 != _colliders.end(); ++it2)
 			{
+				if ((*it1) == (*it2))
+				{
+					continue;
+				}
+
 				if ((*it1)->CollidesWith(*(*it2)))
 				{
 					// TODO: Set layers and check against them
@@ -120,5 +128,21 @@ namespace GitGud::Extensions
 			"Can't remove collider that's not added to collission module.");
 
 		_dirtyColliders.insert(collider);
+	}
+
+	void CollisionModule::DrawDebug()
+	{
+		for (auto col : *this)
+		{
+			if (col->GetColliderType() == GitGud::Extensions::Collider2DType::Quad)
+			{
+				auto quadCollider = static_cast<GitGud::Extensions::QuadCollider2D*>(col);
+
+				auto pos = quadCollider->GetPositon();
+				auto size = quadCollider->GetSize();
+
+				Renderer2D::DrawQuad({ pos.x, pos.y, 1.0f }, size, { 0.9f, 0.2f, 0.3f, 0.8f });
+			}
+		}
 	}
 }
