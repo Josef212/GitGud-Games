@@ -13,8 +13,10 @@ struct MinMax
 
 struct LevelProperties
 {
+	float Gravity = -0.4f;
+	float HorizontalSpeed = -5.0f;
+
 	int ObstaclesCount = 8;
-	float Speed = -4.0f;
 	MinMax ObstaclesSeparation = { 6.0f, 8.0f };
 
 	float ObstacleWidth = 1.5f;

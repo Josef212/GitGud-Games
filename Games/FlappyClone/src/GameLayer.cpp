@@ -34,6 +34,8 @@ void GameLayer::OnUpdate(Timestep ts)
 {
 	_level->Update(ts);
 
+	CollisionModule::Get()->Update(ts);
+
 	RenderCommand::SetClearColor(glm::vec4(0.15f));
 	RenderCommand::Clear();
 	

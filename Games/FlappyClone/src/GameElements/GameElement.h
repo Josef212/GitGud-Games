@@ -3,7 +3,7 @@
 class GameElement
 {
 public:
-	~GameElement() = default;
+	virtual ~GameElement() = default;
 
 	inline bool IsActive()const { return _active; }
 	inline void SetACtive(bool active) { _active = active; }

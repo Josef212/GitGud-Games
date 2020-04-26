@@ -98,7 +98,7 @@ FlappyCloneApp::FlappyCloneApp()
 #endif
 	_gameLayer = new GameLayer();
 	PushLayer(_gameLayer);
-	PushLayer(new TestEditorLayer());
+	//PushLayer(new TestEditorLayer());
 }
 
 FlappyCloneApp::~FlappyCloneApp()

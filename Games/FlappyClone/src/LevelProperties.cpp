@@ -23,7 +23,8 @@ void LevelPropertiesEditor(LevelProperties& properties)
 {
 	ImGui::TextColored({ 1, 1, 0, 1 }, "Level Properties");
 	ImGui::DragInt("Obstacles count", &properties.ObstaclesCount);
-	ImGui::DragFloat("Speed", &properties.Speed, 0.1f);
+	ImGui::DragFloat("Gravity", &properties.Gravity, 0.1f);
+	ImGui::DragFloat("Horizontal speed", &properties.HorizontalSpeed, 0.1f);
 	DragMinMax("Separation", properties.ObstaclesSeparation, 0.1f);
 
 	ImGui::TextColored({ 1, 1, 0, 1 }, "Obstacle Properties");

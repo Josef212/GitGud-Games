@@ -36,6 +36,9 @@ public:
 	inline const GitGud::Extensions::QuadCollider2D* GetTopCollider() const { return _topCollider; }
 	inline const GitGud::Extensions::QuadCollider2D* GetBotCollider() const { return _botCollider; }
 
+	inline GitGud::Extensions::QuadCollider2D* GetTopCollider() { return _topCollider; }
+	inline GitGud::Extensions::QuadCollider2D* GetBotCollider() { return _botCollider; }
+
 protected:
 	void TransformUpdated();
 

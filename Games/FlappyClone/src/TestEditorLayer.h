@@ -19,7 +19,7 @@ private:
 	glm::vec2 _position, _size;
 	glm::vec4 _color;
 	char _name[50];
-	bool _renderQuad = true, _renderTestObstacle = true, _renderCollisions = false;
+	bool _renderQuad = false, _renderTestObstacle = false, _renderCollisions = false;
 	Obstacle* _testObstacle = nullptr;
 	glm::vec4 _colliderDebugColor = { 0.9f, 0.2f, 0.3f, 0.8f };
 };

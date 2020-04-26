@@ -4,11 +4,17 @@
 #include "Level.h"
 #include "Random.h"
 
+#include "Collisions.h"
+
 #include <imgui/imgui.h>
 
-Level::Level() : _limits(nullptr)
+using namespace GitGud;
+
+Level::Level() : _limits(nullptr), _player(CreateScope<Player>(&_levelProperties))
 {
 	_limits = new Obstacle(0.0f, 0.0f, 50.0f, 0.8f, { 0.25f, 0.25f, 0.25f, 1.0f });
+	_limits->GetTopCollider()->_debugName = "TopLimits";
+	_limits->GetBotCollider()->_debugName = "BotLimits";
 
 	_obstacles.reserve(_levelProperties.ObstaclesCount); // TODO: Cehck resize vs reserve about memory allocation
 
@@ -16,8 +22,11 @@ Level::Level() : _limits(nullptr)
 	float lastX = camera.GetRight();
 	for (uint32_t i = 0; i < _levelProperties.ObstaclesCount; ++i)
 	{
-		_obstacles.emplace_back(new Obstacle());
+		_obstacles.emplace_back(CreateScope<Obstacle>());
 		GenerateObstacle(*_obstacles[i], lastX);
+
+		_obstacles[i]->GetTopCollider()->_debugName = std::to_string(i) + " : TopObstacle";
+		_obstacles[i]->GetBotCollider()->_debugName = std::to_string(i) + " : BotObstacle";
 
 		lastX = _obstacles[i]->GetX();
 	}
@@ -29,19 +38,21 @@ Level::~Level()
 
 void Level::Update(float dt)
 {
-	for (Obstacle* o : _obstacles)
+	for (Scope<Obstacle>& o : _obstacles)
 	{
 		auto posX = o->GetX();
-		posX += _levelProperties.Speed * dt;
+		posX += _levelProperties.HorizontalSpeed * dt;
 		o->SetX(posX);
 	}
 
+	_player->Update(dt);
+
 	auto& camera = static_cast<FlappyCloneApp&>(GitGud::Application::Get()).GetCamera();
-	Obstacle* currentObstacle = _obstacles[_currentObstacleIndex];
+	Scope<Obstacle>& currentObstacle = _obstacles[_currentObstacleIndex];
 	if (currentObstacle->GetX() + (currentObstacle->GetObstacleWidth() * 0.51f) < camera.GetLeft())
 	{
 		uint32_t prevObstacleIndex = (_currentObstacleIndex - 1) % _obstacles.size();
-		Obstacle* prevObstacle = _obstacles[prevObstacleIndex];
+		Scope<Obstacle>& prevObstacle = _obstacles[prevObstacleIndex];
 		GenerateObstacle(*currentObstacle, prevObstacle->GetX());
 		
 		_currentObstacleIndex = ++_currentObstacleIndex % _obstacles.size();
@@ -50,17 +61,25 @@ void Level::Update(float dt)
 
 void Level::Render()
 {
-	for (Obstacle* b : _obstacles)
+	for (Scope<Obstacle>& b : _obstacles)
 	{
 		b->Render();
 	}
 
 	_limits->Render();
+	_player->Render();
+
+	if (GitGud::Extensions::CollisionModule::Get()->_drawDebug)
+	{
+		GitGud::Extensions::CollisionModule::Get()->DrawDebug();
+	}
 }
 
 void Level::OnImGuiRender()
 {
 	ImGui::Begin("Level");
+
+	ImGui::Checkbox("Debug collisions", &GitGud::Extensions::CollisionModule::Get()->_drawDebug);
 	
 	//ImGui::Text("Obstacles");
 	//for (uint32_t i = 0; i < _obstacles.size(); ++i)
@@ -73,7 +92,10 @@ void Level::OnImGuiRender()
 	//	ImGui::PopID();
 	//}
 
-	ImGui::Text("Level properties");
+	_player->ImGuiRender();
+
+	ImGui::Separator();
+
 	LevelPropertiesEditor(_levelProperties);
 
 	ImGui::End();
